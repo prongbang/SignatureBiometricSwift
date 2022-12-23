@@ -8,6 +8,6 @@
 import Foundation
 
 public struct KeyPairResult {
-    let publicKey: String?
-    let status: String
+    public let publicKey: String?
+    public let status: String
 }

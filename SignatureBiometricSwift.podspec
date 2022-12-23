@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
     s.name             = 'SignatureBiometricSwift'
-    s.version          = '1.0.1'
+    s.version          = '1.0.2'
     s.summary          = 'Generate key pair and signing using Local Authentication for iOS.'
     s.homepage         = 'https://github.com/prongbang/SignatureBiometricSwift'
     s.license          = 'MIT'

@@ -9,6 +9,6 @@ import Foundation
 import CommonCrypto
 
 public struct KeyPair {
-    let privateKey: SecKey?
-    let publicKey: SecKey?
+    public let privateKey: SecKey?
+    public let publicKey: SecKey?
 }

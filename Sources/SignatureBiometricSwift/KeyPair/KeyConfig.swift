@@ -8,5 +8,5 @@
 import Foundation
 
 public struct KeyConfig {
-    var name: String
+    public var name: String
 }
