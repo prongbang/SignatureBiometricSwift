@@ -15,7 +15,7 @@ In your `Package.swift` file, add `SignatureBiometricSwift` dependency to corres
 ```swift
 let package = Package(
   dependencies: [
-    .package(url: "https://github.com/prongbang/SignatureBiometricSwift.git", from: "1.0.0"),
+    .package(url: "https://github.com/prongbang/SignatureBiometricSwift.git", from: "1.0.1"),
   ],
 )
 ```
