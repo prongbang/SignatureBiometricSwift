@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol KeychainManager {
+public protocol KeychainManager {
     func loadKey(name: String) -> KeyPair?
     func removeKey(name: String)
     func makeAndStoreKey(name: String) throws -> KeyPair

@@ -8,7 +8,7 @@
 import Foundation
 import LocalAuthentication
 
-class LocalSignatureBiometricManager : SignatureBiometricManager {
+public class LocalSignatureBiometricManager : SignatureBiometricManager {
     
     private let signatureManager: SignatureManager
     private let keyPairManager: KeyManager
@@ -18,7 +18,7 @@ class LocalSignatureBiometricManager : SignatureBiometricManager {
         self.keyPairManager = keyPairManager
     }
     
-    func createKeyPair(reason: String, result: @escaping (KeyPairResult) -> ()) {
+    public func createKeyPair(reason: String, result: @escaping (KeyPairResult) -> ()) {
         let context = LAContext()
         
         // Removing enter password option
@@ -88,7 +88,7 @@ class LocalSignatureBiometricManager : SignatureBiometricManager {
         }
     }
     
-    func sign(payload: String, result: @escaping (String?) -> ()) {
+    public func sign(payload: String, result: @escaping (String?) -> ()) {
         let context = LAContext()
         
         // Removing enter password option
@@ -102,7 +102,7 @@ class LocalSignatureBiometricManager : SignatureBiometricManager {
         }
     }
     
-    func verify(payload: String, signature: String, result: @escaping (Bool) -> ()) {
+    public func verify(payload: String, signature: String, result: @escaping (Bool) -> ()) {
         let context = LAContext()
         
         // Removing enter password option
@@ -116,7 +116,7 @@ class LocalSignatureBiometricManager : SignatureBiometricManager {
         }
     }
     
-    static func newInstance(keyConfig: KeyConfig) -> SignatureBiometricManager {
+    public static func newInstance(keyConfig: KeyConfig) -> SignatureBiometricManager {
         let keychainManager = KeychainAccessManager()
         let keyPairManager = KeyPairManager(
             keyConfig: keyConfig,

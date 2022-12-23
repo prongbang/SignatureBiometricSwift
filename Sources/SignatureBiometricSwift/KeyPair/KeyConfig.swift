@@ -7,6 +7,6 @@
 
 import Foundation
 
-struct KeyConfig {
+public struct KeyConfig {
     var name: String
 }

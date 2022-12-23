@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct KeyPairResult {
+public struct KeyPairResult {
     let publicKey: String?
     let status: String
 }

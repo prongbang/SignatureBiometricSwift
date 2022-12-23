@@ -8,7 +8,7 @@
 import Foundation
 import CommonCrypto
 
-class BiometricSignatureManager : SignatureManager {
+public class BiometricSignatureManager : SignatureManager {
     
     private let keyManager: KeyManager
     private let keyConfig: KeyConfig
@@ -18,14 +18,14 @@ class BiometricSignatureManager : SignatureManager {
         self.keyConfig = keyConfig
     }
     
-    func sign(message: String) -> String? {
+    public func sign(message: String) -> String? {
         return sign(
             algorithm: .ecdsaSignatureMessageX962SHA256,
             data: message.data(using: .utf8)!
         )
     }
     
-    func sign(algorithm: SecKeyAlgorithm, data: Data) -> String? {
+    public func sign(algorithm: SecKeyAlgorithm, data: Data) -> String? {
         
         let key = keyManager.getOrCreate()
         guard key != nil else {
@@ -60,7 +60,7 @@ class BiometricSignatureManager : SignatureManager {
         
     }
     
-    func verify(message: String, signature: String) -> Bool {
+    public func verify(message: String, signature: String) -> Bool {
         
         let key = keyManager.getOrCreate()
         guard key != nil else {

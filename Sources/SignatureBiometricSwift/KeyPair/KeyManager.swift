@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol KeyManager {
+public protocol KeyManager {
     func create() -> KeyPair?
     func getOrCreate() -> KeyPair?
 }

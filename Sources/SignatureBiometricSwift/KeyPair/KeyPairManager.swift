@@ -8,7 +8,7 @@
 import Foundation
 import CommonCrypto
 
-class KeyPairManager : KeyManager {
+public class KeyPairManager : KeyManager {
     
     private let keychainManager: KeychainManager
     private let keyConfig: KeyConfig
@@ -19,7 +19,7 @@ class KeyPairManager : KeyManager {
         self.keychainManager = keychainManager
     }
     
-    func create() -> KeyPair? {
+    public func create() -> KeyPair? {
         let key = keychainManager.loadKey(name: keyConfig.name)
         guard key == nil else {
             return key
@@ -35,7 +35,7 @@ class KeyPairManager : KeyManager {
         return nil
     }
     
-    func getOrCreate() -> KeyPair? {
+    public func getOrCreate() -> KeyPair? {
         guard keyPair == nil else {
             return keyPair
         }

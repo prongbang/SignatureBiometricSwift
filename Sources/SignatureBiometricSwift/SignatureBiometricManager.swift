@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol SignatureBiometricManager {
+public protocol SignatureBiometricManager {
     func createKeyPair(reason: String, result: @escaping (KeyPairResult) -> ())
     func sign(payload: String, result: @escaping (String?) -> ())
     func verify(payload: String, signature: String, result: @escaping (Bool) -> ())

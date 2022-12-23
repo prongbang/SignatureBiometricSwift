@@ -7,9 +7,9 @@
 
 import Foundation
 
-class KeychainAccessManager : KeychainManager {
+public class KeychainAccessManager : KeychainManager {
     
-    func loadKey(name: String) -> KeyPair? {
+    public func loadKey(name: String) -> KeyPair? {
         let tag = name.data(using: .utf8)!
         let query: [String: Any] = [
             kSecClass as String                 : kSecClassKey,
@@ -33,7 +33,7 @@ class KeychainAccessManager : KeychainManager {
         return KeyPair(privateKey: privateKey, publicKey: publicKey)
     }
     
-    func removeKey(name: String) {
+    public func removeKey(name: String) {
         let tag = name.data(using: .utf8)!
         let query: [String: Any] = [
             kSecClass as String                 : kSecClassKey,
@@ -43,7 +43,7 @@ class KeychainAccessManager : KeychainManager {
         SecItemDelete(query as CFDictionary)
     }
     
-    func makeAndStoreKey(name: String) throws -> KeyPair {
+    public func makeAndStoreKey(name: String) throws -> KeyPair {
         removeKey(name: name)
         
         let flags: SecAccessControlCreateFlags
