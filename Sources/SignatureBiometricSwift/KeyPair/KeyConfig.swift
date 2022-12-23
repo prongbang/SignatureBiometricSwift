@@ -8,9 +8,9 @@
 import Foundation
 
 public struct KeyConfig {
-    var name: String
+    public var name: String = ""
     
-    init(name: String) {
+    public init(name: String) {
         self.name = name
     }
 }
