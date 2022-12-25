@@ -38,7 +38,7 @@ public class LocalSignatureBiometricManager : SignatureBiometricManager {
                 } else {
                     
                     guard let error = error else {
-                        result(KeyPairResult(publicKey: nil, status: "error"))
+                        result(KeyPairResult(publicKey: nil, status: "Error"))
                         print("Error is null")
                         return
                     }
@@ -49,34 +49,37 @@ public class LocalSignatureBiometricManager : SignatureBiometricManager {
                     
                     switch nsError.code {
                     case Int(kLAErrorPasscodeNotSet):
-                        result(KeyPairResult(publicKey: nil, status: "passcodeNotSet"))
+                        result(KeyPairResult(publicKey: nil, status: "PasscodeNotSet"))
                         break
-                    case Int(kLAErrorTouchIDNotEnrolled):
-                        result(KeyPairResult(publicKey: nil, status: "touchIDNotEnrolled"))
+                    case Int(kLAErrorTouchIDNotEnrolled), Int(kLAErrorBiometryNotEnrolled):
+                        result(KeyPairResult(publicKey: nil, status: "NotEnrolled"))
                         break
-                    case Int(kLAErrorTouchIDLockout):
-                        result(KeyPairResult(publicKey: nil, status: "touchIDLockout"))
+                    case Int(kLAErrorTouchIDLockout), Int(kLAErrorBiometryLockout):
+                        result(KeyPairResult(publicKey: nil, status: "LockedOut"))
                         break
-                    case Int(kLAErrorTouchIDNotAvailable):
-                        result(KeyPairResult(publicKey: nil, status: "touchIDNotAvailable"))
+                    case Int(kLAErrorBiometryNotPaired):
+                        result(KeyPairResult(publicKey: nil, status: "NotPaired"))
+                        break
+                    case Int(kLAErrorBiometryDisconnected):
+                        result(KeyPairResult(publicKey: nil, status: "Disconnected"))
+                        break
+                    case Int(kLAErrorInvalidDimensions):
+                        result(KeyPairResult(publicKey: nil, status: "InvalidDimensions"))
+                        break
+                    case Int(kLAErrorBiometryNotAvailable), Int(kLAErrorTouchIDNotAvailable):
+                        result(KeyPairResult(publicKey: nil, status: "NotAvailable"))
                         break
                     case Int(kLAErrorUserFallback):
-                        result(KeyPairResult(publicKey: nil, status: "userFallback"))
+                        result(KeyPairResult(publicKey: nil, status: "UserFallback"))
                         break
                     case Int(kLAErrorAuthenticationFailed):
-                        result(KeyPairResult(publicKey: nil, status: "authenticationFailed"))
+                        result(KeyPairResult(publicKey: nil, status: "AuthenticationFailed"))
                         break
-                    case Int(kLAErrorSystemCancel):
-                        result(KeyPairResult(publicKey: nil, status: "systemCancel"))
-                        break
-                    case Int(kLAErrorAppCancel):
-                        result(KeyPairResult(publicKey: nil, status: "appCancel"))
-                        break
-                    case Int(kLAErrorUserCancel):
-                        result(KeyPairResult(publicKey: nil, status: "userCancel"))
+                    case Int(kLAErrorSystemCancel), Int(kLAErrorAppCancel), Int(kLAErrorUserCancel):
+                        result(KeyPairResult(publicKey: nil, status: "Canceled"))
                         break
                     default:
-                        result(KeyPairResult(publicKey: nil, status: "error"))
+                        result(KeyPairResult(publicKey: nil, status: "Error"))
                         break
                     }
                     
@@ -84,7 +87,7 @@ public class LocalSignatureBiometricManager : SignatureBiometricManager {
             })
             
         } else {
-            result(KeyPairResult(publicKey: nil, status: "notEvaluatePolicy"))
+            result(KeyPairResult(publicKey: nil, status: "NotEvaluatePolicy"))
         }
     }
     
