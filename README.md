@@ -15,7 +15,7 @@ In your `Package.swift` file, add `SignatureBiometricSwift` dependency to corres
 ```swift
 let package = Package(
   dependencies: [
-    .package(url: "https://github.com/prongbang/SignatureBiometricSwift.git", from: "1.0.5"),
+    .package(url: "https://github.com/prongbang/SignatureBiometricSwift.git", from: "1.0.6"),
   ],
 )
 ```
@@ -49,7 +49,7 @@ import SignatureBiometricSwift
 
 let reason = "Please scan your fingerprint (or face) to authenticate"
 signatureBiometricManager.createKeyPair(reason: reason) { result in
-    if result.status == "success" {
+    if result.status == SignatureBiometricStatus.success {
         let publicKey = result.publicKey ?? ""
         print("publicKey: \(publicKey)")
     } else {
@@ -64,8 +64,12 @@ signatureBiometricManager.createKeyPair(reason: reason) { result in
 import SignatureBiometricSwift
 
 let clearText = "Hello"
-signatureBiometricManager.sign(payload: clearText) { signature in
-    print("signature: \(signature)")
+signatureBiometricManager.sign(payload: clearText) { result in
+    if result.status == SignatureBiometricStatus.success {
+        print("signature: \(result.signature)")    
+    } else {
+        print("Error: \(result.status)")
+    }
 }
 ```
 
@@ -75,7 +79,12 @@ signatureBiometricManager.sign(payload: clearText) { signature in
 import SignatureBiometricSwift
 
 let clearText = "Hello"
-signatureBiometricManager.verify(payload: clearText, signature: signed) { verified in
-    print("verified: \(verified)")
+let reason = "Please scan your fingerprint (or face) to authenticate"
+signatureBiometricManager.verify(reason: reason, payload: clearText, signature: signed) { result in
+    if result.status == SignatureBiometricStatus.success {
+        print("verified: \(result.verified)")
+    } else {
+        print("Error: \(result.status)")
+    }
 }
 ```

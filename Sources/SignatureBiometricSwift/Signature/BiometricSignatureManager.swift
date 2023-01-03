@@ -7,6 +7,7 @@
 
 import Foundation
 import CommonCrypto
+import LocalAuthentication
 
 public class BiometricSignatureManager : SignatureManager {
     
@@ -18,23 +19,24 @@ public class BiometricSignatureManager : SignatureManager {
         self.keyConfig = keyConfig
     }
     
-    public func sign(message: String) -> String? {
+    public func sign(message: String) -> SignatureResult {
         return sign(
             algorithm: .ecdsaSignatureMessageX962SHA256,
             data: message.data(using: .utf8)!
         )
     }
     
-    public func sign(algorithm: SecKeyAlgorithm, data: Data) -> String? {
+    public func sign(algorithm: SecKeyAlgorithm, data: Data) -> SignatureResult {
         
         let key = keyManager.getOrCreate()
         guard key != nil else {
-            return nil
+            print("Can't get or create key pair")
+            return SignatureResult(signature: nil, status: SignatureBiometricStatus.error)
         }
         
         guard SecKeyIsAlgorithmSupported(key!.privateKey!, .sign, algorithm) else {
             print("Algorith not supported")
-            return nil
+            return SignatureResult(signature: nil, status: SignatureBiometricStatus.error)
         }
         
         // SecKeyCreateSignature call is blocking when the used key is protected by biometry authentication.
@@ -49,13 +51,45 @@ public class BiometricSignatureManager : SignatureManager {
             ) as Data?
             
             guard signature != nil else {
-                print("Can't sign: \((error!.takeRetainedValue() as Error).localizedDescription)")
-                return nil
+                if error != nil {
+                    let err = error!.takeRetainedValue() as Error
+                    guard let nsError = err as NSError? else {
+                        return SignatureResult(signature: nil, status: SignatureBiometricStatus.error)
+                    }
+                    
+                    print("Can't sign: \(nsError.localizedDescription)")
+                    
+                    switch nsError.code {
+                    case Int(kLAErrorPasscodeNotSet):
+                        return SignatureResult(signature: nil, status: SignatureBiometricStatus.passcodeNotSet)
+                    case Int(kLAErrorTouchIDNotEnrolled), Int(kLAErrorBiometryNotEnrolled):
+                        return SignatureResult(signature: nil, status: SignatureBiometricStatus.notEnrolled)
+                    case Int(kLAErrorTouchIDLockout), Int(kLAErrorBiometryLockout):
+                        return SignatureResult(signature: nil, status: SignatureBiometricStatus.lockedOut)
+                    case Int(kLAErrorBiometryNotPaired):
+                        return SignatureResult(signature: nil, status: SignatureBiometricStatus.notPaired)
+                    case Int(kLAErrorBiometryDisconnected):
+                        return SignatureResult(signature: nil, status: SignatureBiometricStatus.disconnected)
+                    case Int(kLAErrorInvalidDimensions):
+                        return SignatureResult(signature: nil, status: SignatureBiometricStatus.invalidDimensions)
+                    case Int(kLAErrorBiometryNotAvailable), Int(kLAErrorTouchIDNotAvailable):
+                        return SignatureResult(signature: nil, status: SignatureBiometricStatus.notAvailable)
+                    case Int(kLAErrorUserFallback):
+                        return SignatureResult(signature: nil, status: SignatureBiometricStatus.userFallback)
+                    case Int(kLAErrorAuthenticationFailed):
+                        return SignatureResult(signature: nil, status: SignatureBiometricStatus.authenticationFailed)
+                    case Int(kLAErrorSystemCancel), Int(kLAErrorAppCancel), Int(kLAErrorUserCancel):
+                        return SignatureResult(signature: nil, status: SignatureBiometricStatus.canceled)
+                    default:
+                        return SignatureResult(signature: nil, status: SignatureBiometricStatus.error)
+                    }
+                }
+                return SignatureResult(signature: nil, status: SignatureBiometricStatus.error)
             }
             
             let signedString = signature!.base64EncodedString(options: [])
             
-            return signedString
+            return SignatureResult(signature: signedString, status: SignatureBiometricStatus.success)
         }.await()
         
     }
@@ -64,10 +98,12 @@ public class BiometricSignatureManager : SignatureManager {
         
         let key = keyManager.getOrCreate()
         guard key != nil else {
+            print("Can't get or create key pair")
             return false
         }
         
         guard let signatureData = Data(base64Encoded: signature, options: []) else {
+            print("Can't convert base64 to data")
             return false
         }
         
