@@ -8,6 +8,10 @@ Keychain
 
 https://developer.apple.com/documentation/security/certificate_key_and_trust_services/keys/storing_keys_in_the_keychain
 
+SecKeyAlgorithm
+
+https://developer.apple.com/documentation/security/seckeyalgorithm/
+
 ## CocoaPods
 
 ```shell
