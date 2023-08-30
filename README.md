@@ -1,6 +1,7 @@
 # SignatureBiometricSwift
 
 Generate key pair and signing (NIST P-256 EC key pair using ECDSA) using Local Authentication for iOS.
+https://developer.apple.com/documentation/security/certificate_key_and_trust_services/keys/protecting_keys_with_the_secure_enclave
 
 ## CocoaPods
 
