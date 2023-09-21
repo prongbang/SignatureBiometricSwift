@@ -2,16 +2,6 @@
 
 Generate key pair and signing (NIST P-256 EC key pair using ECDSA) using Local Authentication for iOS.
 
-https://developer.apple.com/documentation/security/certificate_key_and_trust_services/keys/protecting_keys_with_the_secure_enclave
-
-Keychain
-
-https://developer.apple.com/documentation/security/certificate_key_and_trust_services/keys/storing_keys_in_the_keychain
-
-SecKeyAlgorithm
-
-https://developer.apple.com/documentation/security/seckeyalgorithm/
-
 #### Android 
 
 [https://github.com/prongbang/SignatureBiometricSwift](https://github.com/prongbang/android-biometric-signature)
@@ -102,3 +92,17 @@ signatureBiometricManager.verify(reason: reason, payload: clearText, signature: 
     }
 }
 ```
+
+### Documentation
+
+#### Protecting keys with the Secure Enclave
+
+https://developer.apple.com/documentation/security/certificate_key_and_trust_services/keys/protecting_keys_with_the_secure_enclave
+
+#### Storing Keys in the Keychain
+
+https://developer.apple.com/documentation/security/certificate_key_and_trust_services/keys/storing_keys_in_the_keychain
+
+#### SecKeyAlgorithm
+
+https://developer.apple.com/documentation/security/seckeyalgorithm/
