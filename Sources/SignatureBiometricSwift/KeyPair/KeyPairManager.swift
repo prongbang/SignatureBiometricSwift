@@ -29,6 +29,11 @@ public class KeyPairManager : KeyManager {
         return nil
     }
     
+    public func get() -> KeyPair? {
+        let key = keychainManager.loadKey(name: keyConfig.name)
+        return key
+    }
+    
     public func getOrCreate() -> KeyPair? {
         let key = keychainManager.loadKey(name: keyConfig.name)
         guard key == nil else {
