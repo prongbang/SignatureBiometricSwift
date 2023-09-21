@@ -12,7 +12,9 @@ SecKeyAlgorithm
 
 https://developer.apple.com/documentation/security/seckeyalgorithm/
 
-- Android: [https://github.com/prongbang/SignatureBiometricSwift](https://github.com/prongbang/android-biometric-signature)
+#### Android 
+
+[https://github.com/prongbang/SignatureBiometricSwift](https://github.com/prongbang/android-biometric-signature)
 
 ## CocoaPods
 
