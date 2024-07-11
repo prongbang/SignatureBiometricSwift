@@ -9,6 +9,8 @@ import Foundation
 
 public class KeychainAccessManager : KeychainManager {
     
+    public init() {}
+    
     public func loadKey(name: String) -> KeyPair? {
         let tag = name.data(using: .utf8)!
         let query: [String: Any] = [
