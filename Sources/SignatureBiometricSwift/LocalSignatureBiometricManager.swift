@@ -18,6 +18,30 @@ public class LocalSignatureBiometricManager : SignatureBiometricManager {
         self.keyPairManager = keyPairManager
     }
     
+    public func biometricsChanged() -> Bool {
+        let context = LAContext()
+        
+        var error: NSError?
+        context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error)
+        
+        // If there is no saved policy state yet
+        if error == nil && LAContext.biometricsPolicyState == nil {
+            LAContext.biometricsPolicyState = context.evaluatedPolicyDomainState
+            return false
+        }
+        
+        if let domainState = context.evaluatedPolicyDomainState, domainState != LAContext.biometricsPolicyState {
+            return true
+        }
+        
+        return false
+    }
+    
+    // Biometrics changed, Reset LAContext.biometricsPolicyState to nil after doing so
+    public func biometricsPolicyStateReset() {
+        LAContext.biometricsPolicyState = nil
+    }
+    
     public func createKeyPair(reason: String, result: @escaping (KeyPairResult) -> ()) {
         let context = LAContext()
         
@@ -29,6 +53,9 @@ public class LocalSignatureBiometricManager : SignatureBiometricManager {
             context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reason, reply: {(success, error) in
                 
                 if (success) {
+                    
+                    // Save current biometrics policy state
+                    LAContext.biometricsPolicyState = context.evaluatedPolicyDomainState
                     
                     let keyPair = self.keyPairManager.create()
                     let pk = keyPair?.publicKey?.toBase64()
@@ -122,6 +149,9 @@ public class LocalSignatureBiometricManager : SignatureBiometricManager {
             context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reason, reply: {(success, error) in
                 
                 if (success) {
+                    
+                    // Save current biometrics policy state
+                    LAContext.biometricsPolicyState = context.evaluatedPolicyDomainState
                     
                     let verified = self.signatureManager.verify(message: payload, signature: signature)
                     result(VerifyResult(verified: verified, status: SignatureBiometricStatus.success))

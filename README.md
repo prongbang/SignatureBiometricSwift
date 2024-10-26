@@ -19,7 +19,7 @@ In your `Package.swift` file, add `SignatureBiometricSwift` dependency to corres
 ```swift
 let package = Package(
   dependencies: [
-    .package(url: "https://github.com/prongbang/SignatureBiometricSwift.git", from: "1.0.8"),
+    .package(url: "https://github.com/prongbang/SignatureBiometricSwift.git", from: "1.0.10"),
   ],
 )
 ```
@@ -90,6 +90,17 @@ signatureBiometricManager.verify(reason: reason, payload: clearText, signature: 
     } else {
         print("Error: \(result.status)")
     }
+}
+```
+
+### Biometrics Changed
+
+```swift
+import SignatureBiometricSwift
+
+let changed = signatureBiometricManager.biometricsChanged()
+if changed {
+    signatureBiometricManager.biometricsPolicyStateReset()
 }
 ```
 
