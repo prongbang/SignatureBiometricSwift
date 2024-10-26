@@ -99,9 +99,13 @@ signatureBiometricManager.verify(reason: reason, payload: clearText, signature: 
 import SignatureBiometricSwift
 
 let changed = signatureBiometricManager.biometricsChanged()
-if changed {
-    signatureBiometricManager.biometricsPolicyStateReset()
-}
+```
+
+### Reset Biometrics Policy State
+
+
+```swift
+signatureBiometricManager.biometricsPolicyStateReset()
 ```
 
 ### Documentation
